@@ -1,0 +1,83 @@
+// This is your Prisma schema file
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Site {
+  id        String   @id @default(cuid())
+  name      String
+  latitude  Float
+  longitude Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  spaces    Space[]
+  bookings  Booking[]
+  telemetry Telemetry[]
+}
+
+model Space {
+  id                String   @id @default(cuid())
+  siteId            String
+  name              String
+  locationReference String?
+  capacity          Int
+  description       String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  site      Site        @relation(fields: [siteId], references: [id])
+  bookings  Booking[]
+  telemetry Telemetry[]
+}
+
+model Booking {
+  id          String   @id @default(cuid())
+  spaceId     String
+  siteId      String
+  clientEmail String
+  bookingDate DateTime
+  startTime   DateTime
+  endTime     DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  space Space @relation(fields: [spaceId], references: [id])
+  site  Site  @relation(fields: [siteId], references: [id])
+}
+
+model BookingWeeklySummary {
+  id          String   @id @default(cuid())
+  clientEmail String
+  weekStart   DateTime
+  count       Int      @default(0)
+  updatedAt   DateTime @updatedAt
+
+  @@unique([clientEmail, weekStart])
+  @@index([clientEmail, weekStart])
+}
+
+model Telemetry {
+  id          String   @id @default(cuid())
+  spaceId     String
+  siteId      String
+  tempC       Float
+  humidityPct Float
+  co2Ppm      Int
+  occupancy   Int
+  powerW      Int
+  recordedAt  DateTime
+  createdAt   DateTime @default(now())
+
+  space Space @relation(fields: [spaceId], references: [id])
+  site  Site  @relation(fields: [siteId], references: [id])
+
+  @@index([spaceId, recordedAt(sort: Desc)])
+}

@@ -1,0 +1,17 @@
+# Dependencies (covers iot-simulator-main and any other subproject without its own .gitignore)
+node_modules/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Internal planning docs
+DEVELOPMENT_PLAN.md
+
+# Claude Code project config
+.claude/
+
+# OS artifacts
+.DS_Store
+Thumbs.db

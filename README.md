@@ -37,17 +37,10 @@ docker-compose up --build
 ```
 
 This starts PostgreSQL, the MQTT broker, the NestJS backend, and the Next.js frontend.
+The backend automatically applies the schema and seeds the database on first run.
 Wait until you see `backend is listening on port 4000` in the logs before continuing.
 
-### 3. Seed the database (first run only)
-
-```bash
-docker-compose exec backend npx prisma db seed
-```
-
-Creates 2 sites and 8 spaces with stable IDs required by the IoT simulator.
-
-### 4. Start the IoT simulator
+### 3. Start the IoT simulator
 
 From the `iot-simulator-main/` directory, run one instance per space using the seeded IDs:
 

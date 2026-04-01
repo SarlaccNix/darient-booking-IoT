@@ -9,8 +9,10 @@ node_modules/
 # Internal planning docs
 DEVELOPMENT_PLAN.md
 
-# Claude Code project config
+# Claude Code / AI assistant project config
 .claude/
+CLAUDE.md
+AGENTS.md
 
 # OS artifacts
 .DS_Store
